@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hearts_Animation_On_Mousemove</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div></div>
+    <script>
+        // Append Element With Distance of 100px
+        /*Variables para almacenar las posiciones anteriores del raton*/
+        let prevMouseX = null;
+        let prevMouseY = null;
+
+        /*Funcion para crear un corazon en una posicion específica*/
+        /*Detecta si el raton se ha movido almenos 100 pixeles desde su posicion  anterior
+        y si es asi crea un corazon en la posicion del raton.*/
+        function heart(event) {
+            /*Verifica si prevMouseX y prevMouseY ya tienen valores asignados*/
+            if (prevMouseX !== null && prevMouseY !== null) {
+                /*calcula la diferenciaen posicion X y Y desde 
+                la posicion anterior del raton*/
+                let deltaX = event.pageX - prevMouseX;
+                let deltaY = event.pageY - prevMouseY;
+                /*calculala distancia recorrida  por el raton 
+                utilizando el teorema de Pitagoras*/
+                let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+                /*comprueba si la distancia recorrida es mayor o igual a 100 pixeles*/
+                if (distance >= 100) {
+                    /*CRea un corazon en la posicion actual del raton*/
+                    createHearts(event.pageX, event.pageY);
+
+                    /*Actualiza prevMouseX y prevMouseY con las posiciones  actuales 
+                    del raton*/
+                    prevMouseX = event.pageX;
+                    prevMouseY = event.pageY;
+                }
+            } else {
+                /*Si prevMouseX y prevMouseY aun no tienen valores asignados, 
+                crea un corazon en la posicion actual del raton*/
+                createHearts(event.pageX, event.pageY);
+                //Actualiza prevMouseX y prevMouseY con las posiciones  actuales 
+                //del raton
+                prevMouseX = event.pageX;
+                prevMouseY = event.pageY;
+            }
+        }
+
+        //Define una funcion llamanda createHearts
+        function createHearts(x,y) {
+            //Crea un elemento 'i' (icono)
+            let i = document.createElement('i');
+            //Agregarel elemento 'i' al final del cuerpo del documento HTML
+            document.body.appendChild(i);
+
+            // Establece la posición superior del elemento 'i' igual a la 
+            //posición Y del evento del ratón
+            i.style.top = (event.pageY) + 'px';
+            // Establece la posición izquierda del elemento 'i' igual a la 
+            //posición X del evento del ratón
+            i.style.left = (event.pageX) + 'px';
+            // Establece una escala aleatoria entre 1 y 3 para el elemento 'i'
+            i.style.scale = `${Math.random() * 2 + 1}`;
+            // Establece las propiedades '--x' y '--y' del elemento 'i' con valores aleatorios 
+            i.style.setProperty('--x',getRandomValue());
+            i.style.setProperty('--y',getRandomValue());
+
+            // Functionque devuelve un valor aleatorio entre -200 y 200 píxeles  
+            function getRandomValue(){
+                return `${Math.random() * 400 - 200}px`
+            }
+
+            // Establece un temporizador que ejecuta una función después de 
+            //un cierto tiempo (en este caso, 2000 milisegundos o 2 segundos)
+            setTimeout(() => {
+                // Remueve el elemento 'i' del cuerpo del documento HTML
+                document.body.removeChild(i);
+            }, 2000);
+        }
+
+        
+
+
+
+        //Agrega  un event listenerque ejecutala funcion  createHearts 
+        //cuando ocurre el evento 'mousemove' (movimiento del raton)
+        document.addEventListener('mousemove', heart);
+    </script>
+</body>
+
+</html>
